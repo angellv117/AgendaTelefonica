@@ -28,12 +28,12 @@ app.use(
 
 const errorHandler = (error, request, response, next) => {
     //console.error(error.message)
-    console.log(error.name)
+    console.log(error.name, error.message)
     if (error.name === 'CastError') {
         return response.status(400).send({ error: 'malformatted id' })
     }
     else if (error.name === 'ValidationError') {
-        return response.status(400).send({ error: 'name to be unique ' })
+        return response.status(400).send({ error: error.message})
     }
     next(error)
 }
@@ -72,7 +72,6 @@ app.get('/api/info', (request, response) => {
 
 //all
 app.get('/api/persons', (request, response) => {
-    console.log(Person.find({}).length)
     Person.find({}).then(persons => {
         response.json(persons)
     })
@@ -96,7 +95,6 @@ app.put('/api/persons/:id', (request, response, next) => {
         name: body.name,
         number: body.number
     }
-    console.log(person, body.id)
     Person.findByIdAndUpdate(request.params.id, person, { new: true })
         .then(updatePerson => {
             response.json(updatePerson)
