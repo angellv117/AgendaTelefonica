@@ -3,7 +3,6 @@ const express = require('express')
 var morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
-const person = require('./models/person')
 
 const app = express()
 app.use(cors())
@@ -22,7 +21,7 @@ app.use(
             tokens.res(req, res, 'content-length'), '-',
             tokens['response-time'](req, res), 'ms',
             req.method === 'POST' ? JSON.stringify(req.body) : ''
-        ].join(' ');
+        ].join(' ')
     })
 )
 
@@ -33,7 +32,7 @@ const errorHandler = (error, request, response, next) => {
         return response.status(400).send({ error: 'malformatted id' })
     }
     else if (error.name === 'ValidationError') {
-        return response.status(400).send({ error: error.message})
+        return response.status(400).send({ error: error.message })
     }
     next(error)
 }
@@ -47,22 +46,22 @@ app.get('/', (request, response) => {
 
 //Info
 app.get('/api/info', (request, response) => {
-    const fechaActual = new Date();
+    const fechaActual = new Date()
     Person.find({}).then(persons => {
         var numContacts = persons.length
-        const diaSemana = fechaActual.toLocaleString('en-US', { weekday: 'short' });
-        const mes = fechaActual.toLocaleString('en-US', { month: 'short' });
-        const dia = fechaActual.getDate();
-        const anio = fechaActual.getFullYear();
-        const horas = fechaActual.getHours();
-        const minutos = fechaActual.getMinutes();
-        const segundos = fechaActual.getSeconds();
-        const zonaHoraria = fechaActual.toLocaleString('en-US', { timeZoneName: 'long' });
+        const diaSemana = fechaActual.toLocaleString('en-US', { weekday: 'short' })
+        const mes = fechaActual.toLocaleString('en-US', { month: 'short' })
+        const dia = fechaActual.getDate()
+        const anio = fechaActual.getFullYear()
+        const horas = fechaActual.getHours()
+        const minutos = fechaActual.getMinutes()
+        const segundos = fechaActual.getSeconds()
+        const zonaHoraria = fechaActual.toLocaleString('en-US', { timeZoneName: 'long' })
 
 
-        const formatoFecha = `${diaSemana} ${mes} ${dia} ${anio} ${horas}:${minutos}:${segundos} GMT${fechaActual.getTimezoneOffset() > 0 ? '-' : '+'}${Math.abs(fechaActual.getTimezoneOffset() / 60)}00 (${zonaHoraria})`;
+        const formatoFecha = `${diaSemana} ${mes} ${dia} ${anio} ${horas}:${minutos}:${segundos} GMT${fechaActual.getTimezoneOffset() > 0 ? '-' : '+'}${Math.abs(fechaActual.getTimezoneOffset() / 60)}00 (${zonaHoraria})`
 
-        info = `<h1>Phonebook has info for ${numContacts}</h1>` +
+        const info = `<h1>Phonebook has info for ${numContacts}</h1>` +
             `<h3>${formatoFecha}</h3>`
         response.send(info)
     })
@@ -129,7 +128,7 @@ app.post('/api/persons', (request, response, next) => {
     person.save().then(savedPerson => {
         response.json(savedPerson)
     })
-    .catch(error => next(error))
+        .catch(error => next(error))
 
 })
 
